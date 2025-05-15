@@ -12,10 +12,17 @@
 }
 
 .form-section {
-  background: #fff;
+  background: var(--color-surface);
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-border);
+}
+
+.form-section h2 {
+  font-family: var(--font-mono);
+  color: var(--color-text);
+  margin-bottom: 2rem;
+  font-weight: 700;
 }
 
 .form-field {
@@ -23,18 +30,30 @@
 }
 
 .form-field label {
+  font-family: var(--font-mono);
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
+  color: var(--color-text);
 }
 
 .form-field input,
 .form-field textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  font-family: var(--font-mono);
+  color: var(--color-text);
+  transition: border-color 0.2s;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
 }
 
 .form-field textarea {
@@ -45,34 +64,38 @@
 .field-description {
   display: block;
   margin-top: 0.25rem;
-  color: #666;
+  color: var(--color-text-secondary);
   font-size: 0.875rem;
+  font-family: var(--font-mono);
 }
 
 .required {
-  color: #e53e3e;
+  color: #f85149;
   margin-left: 0.25rem;
 }
 
 .deploy-button {
   width: 100%;
   padding: 1rem;
-  background-color: #0052ff;
+  background-color: var(--color-primary);
   color: white;
   border: none;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s;
+  font-family: var(--font-mono);
 }
 
 .deploy-button:hover {
-  background-color: #0043cc;
+  background-color: var(--color-primary-dark);
 }
 
 .deploy-button:disabled {
-  background-color: #ccc;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
   cursor: not-allowed;
 }
 
@@ -80,10 +103,17 @@
 .preview-section {
   position: sticky;
   top: 2rem;
-  background: #fff;
+  background: var(--color-surface);
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-border);
+}
+
+.preview-section h3 {
+  font-family: var(--font-mono);
+  color: var(--color-text);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
 }
 
 .jetton-preview {
@@ -96,10 +126,11 @@
   margin: 0 auto 1rem;
   border-radius: 50%;
   overflow: hidden;
-  background: #f3f4f6;
+  background: var(--color-background);
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid var(--color-border);
 }
 
 .no-image {
@@ -108,24 +139,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #e5e7eb;
+  background: var(--color-background);
   font-size: 3rem;
   font-weight: bold;
-  color: #9ca3af;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
 }
 
 .preview-info h4 {
   margin: 0;
   font-size: 1.25rem;
-  color: #111;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-weight: 700;
 }
 
 .preview-info p {
   margin: 0.5rem 0;
-  color: #666;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
 }
 
 .preview-info small {
-  color: #888;
+  color: var(--color-text-secondary);
   font-size: 0.875rem;
+  font-family: var(--font-mono);
 } 

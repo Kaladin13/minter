@@ -12,7 +12,7 @@ export const App: FC = () => {
         <nav className="app-nav">
           <div className="nav-content">
             <Link to="/" className="nav-logo">
-              TON Minter
+              ⚡ Tact Minter
             </Link>
             <div className="nav-links">
               <Link to="/minter" className="nav-link">
@@ -26,11 +26,21 @@ export const App: FC = () => {
         <Routes>
           <Route path="/" element={
             <div className="home">
-              <h1>Welcome to TON Minter</h1>
-              <p>Create and deploy your Jetton on TON blockchain</p>
-              <Link to="/minter" className="cta-button">
-                Get Started
-              </Link>
+              <h1>⚡ Welcome to Tact Minter</h1>
+              <p>Create and deploy your Jetton smart contracts on TON blockchain using Tact language</p>
+              <div className="cta-container">
+                <Link to="/minter" className="cta-button">
+                  Deploy New Jetton
+                </Link>
+                <a 
+                  href="https://docs.tact-lang.org/cookbook/fungible-tokens" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="docs-link"
+                >
+                  Read Tact Docs
+                </a>
+              </div>
             </div>
           } />
           <Route path="/minter" element={<JettonMinter />} />
