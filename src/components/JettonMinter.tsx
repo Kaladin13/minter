@@ -2,8 +2,27 @@ import { FC, useState } from 'react'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { jettonFormSpec } from '../constants/formSpec'
 import { JettonFormData } from '../types/minter'
+import { DeploymentProgress, DeploymentStep } from './DeploymentProgress'
 import JettonPreview from './JettonPreview'
-import { deployJettonMinter } from '@/services/jetton-deployer'
+import { deployJettonMinter } from '../services/jetton-deployer'
+
+const DEPLOYMENT_STEPS: DeploymentStep[] = [
+  {
+    id: 'external',
+    label: 'Preparing deployment',
+    status: 'pending',
+  },
+  {
+    id: 'deploy',
+    label: 'Deploying Jetton Minter',
+    status: 'pending',
+  },
+  {
+    id: 'mint',
+    label: 'Minting initial supply',
+    status: 'pending',
+  },
+]
 
 export const JettonMinter: FC = () => {
   const [formData, setFormData] = useState<JettonFormData>(() => {
@@ -17,6 +36,11 @@ export const JettonMinter: FC = () => {
     }, {} as JettonFormData)
   })
 
+  const [isDeploying, setIsDeploying] = useState(false)
+  const [deploymentSteps, setDeploymentSteps] = useState<DeploymentStep[]>(DEPLOYMENT_STEPS)
+  const [currentStepId, setCurrentStepId] = useState<string | null>(null)
+  const [deployedAddress, setDeployedAddress] = useState<string | null>(null)
+
   const walletAddress = useTonAddress()
   const [tonConnectUI] = useTonConnectUI()
 
@@ -27,21 +51,40 @@ export const JettonMinter: FC = () => {
     }))
   }
 
+  const updateStepStatus = (stepId: string, status: DeploymentStep['status']) => {
+    setDeploymentSteps((steps) =>
+      steps.map((step) => (step.id === stepId ? { ...step, status } : step)),
+    )
+  }
+
   const handleDeploy = async () => {
     if (!walletAddress || !tonConnectUI) {
       console.error('Wallet not connected')
       return
     }
 
-    // For now, just log the data
-    console.log('Deploying Jetton with data:', {
-      formData,
-      walletAddress,
-    })
+    setIsDeploying(true)
+    setDeploymentSteps(DEPLOYMENT_STEPS) // Reset steps
+    setDeployedAddress(null)
 
-    const deployedAddress = await deployJettonMinter(formData, tonConnectUI)
-    // show modal with the address
-    alert(`Jetton deployed at address: ${deployedAddress}`)
+    try {
+      const address = await deployJettonMinter(
+        formData,
+        tonConnectUI,
+        updateStepStatus,
+        setCurrentStepId,
+      )
+
+      setDeployedAddress(address)
+      // You could show a success modal here with the address
+    } catch (error) {
+      console.error('Deployment failed:', error)
+      // You could show an error modal here
+    } finally {
+      setTimeout(() => {
+        setIsDeploying(false)
+      }, 1500) // Keep success state visible for a moment
+    }
   }
 
   return (
@@ -89,9 +132,13 @@ export const JettonMinter: FC = () => {
               type='button'
               onClick={handleDeploy}
               className='deploy-button'
-              disabled={!walletAddress}
+              disabled={!walletAddress || isDeploying}
             >
-              {walletAddress ? 'Deploy Jetton' : 'Connect Wallet to Deploy'}
+              {!walletAddress
+                ? 'Connect Wallet to Deploy'
+                : isDeploying
+                ? 'Deploying...'
+                : 'Deploy Jetton'}
             </button>
           </form>
         </div>
@@ -100,6 +147,12 @@ export const JettonMinter: FC = () => {
           <JettonPreview formData={formData} />
         </div>
       </div>
+
+      <DeploymentProgress
+        isOpen={isDeploying}
+        steps={deploymentSteps}
+        currentStepId={currentStepId}
+      />
     </div>
   )
 }
