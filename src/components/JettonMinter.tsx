@@ -3,6 +3,7 @@ import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { jettonFormSpec } from '../constants/formSpec'
 import { JettonFormData } from '../types/minter'
 import JettonPreview from './JettonPreview'
+import { deployJettonMinter } from '@/services/jetton-deployer'
 
 export const JettonMinter: FC = () => {
   const [formData, setFormData] = useState<JettonFormData>(() => {
@@ -37,6 +38,10 @@ export const JettonMinter: FC = () => {
       formData,
       walletAddress,
     })
+
+    const deployedAddress = await deployJettonMinter(formData, tonConnectUI)
+    // show modal with the address
+    alert(`Jetton deployed at address: ${deployedAddress}`)
   }
 
   return (
