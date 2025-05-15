@@ -4,6 +4,9 @@ import { getTonClient } from './client'
 import { Address, beginCell, storeStateInit, toNano } from '@ton/ton'
 import { JettonMinter, storeMint } from './wrappers/Jetton_JettonMinter'
 import { waitForContractDeploy } from './utils'
+import { buildOnchainMetadata } from './jetton-helpers'
+
+const deployTonAmount = toNano('0.1') // 0.1 TON
 
 export const deployJettonMinter = async (data: JettonFormData, provider: TonConnectUI) => {
   const client = await getTonClient()
@@ -13,12 +16,12 @@ export const deployJettonMinter = async (data: JettonFormData, provider: TonConn
   const balance = await client.getBalance(deployerAddress)
 
   // TODO: check if the balance is enough to deploy the jetton minter (by version)
-  if (balance < 1) {
+  if (balance < deployTonAmount) {
     throw new Error('Insufficient balance')
   }
 
   // TODO: create onchain content cell from the form data
-  const onchainContentCell = beginCell().endCell()
+  const onchainContentCell = buildOnchainMetadata(data)
 
   const minter = await JettonMinter.fromInit(0n, deployerAddress, onchainContentCell, true)
 
@@ -57,7 +60,7 @@ export const deployJettonMinter = async (data: JettonFormData, provider: TonConn
     messages: [
       {
         address: minter.address.toString(),
-        amount: toNano('0.1').toString(), // 0.1 TON
+        amount: deployTonAmount.toString(), // 0.1 TON
         stateInit: stateInitCell.toBoc().toString('base64'),
         payload: mintMessageCell.toBoc().toString('base64'),
       },
