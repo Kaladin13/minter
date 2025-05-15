@@ -29,7 +29,7 @@ export async function waitForSeqno(walletAddress: Address, client: TonClient) {
 
   return async () => {
     for (let attempt = 0; attempt < 25; attempt++) {
-      await sleep(1000)
+      await sleep(2500)
       const seqnoAfter = await getSeqno(walletAddress, client)
       if (seqnoAfter > seqnoBefore) return
     }

@@ -3,6 +3,7 @@ import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { jettonFormSpec } from '../constants/formSpec'
 import { JettonFormData } from '../types/minter'
 import { DeploymentProgress, DeploymentStep } from './DeploymentProgress'
+import { ResultModal } from './ResultModal'
 import JettonPreview from './JettonPreview'
 import { deployJettonMinter } from '../services/jetton-deployer'
 import { DEPLOYMENT_STEPS, StepId } from '@/constants/steps'
@@ -22,7 +23,11 @@ export const JettonMinter: FC = () => {
   const [isDeploying, setIsDeploying] = useState(false)
   const [deploymentSteps, setDeploymentSteps] = useState<DeploymentStep[]>([...DEPLOYMENT_STEPS])
   const [currentStepId, setCurrentStepId] = useState<StepId | null>(null)
-  const [deployedAddress, setDeployedAddress] = useState<string | null>(null)
+  const [deploymentResult, setDeploymentResult] = useState<{
+    type: 'success' | 'error'
+    minterAddress?: string
+    error?: string
+  } | null>(null)
 
   const walletAddress = useTonAddress()
   const [tonConnectUI] = useTonConnectUI()
@@ -48,7 +53,7 @@ export const JettonMinter: FC = () => {
 
     setIsDeploying(true)
     setDeploymentSteps([...DEPLOYMENT_STEPS]) // Reset steps
-    setDeployedAddress(null)
+    setDeploymentResult(null)
 
     try {
       const address = await deployJettonMinter(
@@ -58,16 +63,28 @@ export const JettonMinter: FC = () => {
         setCurrentStepId,
       )
 
-      setDeployedAddress(address)
-      // You could show a success modal here with the address
+      // Wait a bit before showing success to allow seeing the final step
+      setTimeout(() => {
+        setDeploymentResult({
+          type: 'success',
+          minterAddress: address,
+        })
+        setIsDeploying(false)
+      }, 1000)
     } catch (error) {
       console.error('Deployment failed:', error)
-      // You could show an error modal here
-    } finally {
       setTimeout(() => {
+        setDeploymentResult({
+          type: 'error',
+          error: error instanceof Error ? error.message : 'Unknown error occurred',
+        })
         setIsDeploying(false)
-      }, 1500) // Keep success state visible for a moment
+      }, 1000)
     }
+  }
+
+  const handleCloseResult = () => {
+    setDeploymentResult(null)
   }
 
   return (
@@ -135,6 +152,14 @@ export const JettonMinter: FC = () => {
         isOpen={isDeploying}
         steps={deploymentSteps}
         currentStepId={currentStepId}
+      />
+
+      <ResultModal
+        isOpen={!!deploymentResult}
+        type={deploymentResult?.type || 'error'}
+        minterAddress={deploymentResult?.minterAddress}
+        error={deploymentResult?.error}
+        onClose={handleCloseResult}
       />
     </div>
   )
