@@ -4,22 +4,26 @@ import { SendTransactionRequest, TonConnectUI } from '@tonconnect/ui-react'
 import { getTonClient } from './client'
 import { buildOnchainMetadata } from './jetton-helpers'
 import { JettonMinter, storeMint } from './wrappers/Jetton_JettonMinter'
-import { waitForContractDeploy } from './utils'
+import { waitForContractDeploy, waitForSeqno } from './utils'
+import { StepId } from '@/constants/steps'
 
-type UpdateStepStatus = (stepId: string, status: 'pending' | 'loading' | 'success' | 'error') => void
-type SetCurrentStep = (stepId: string | null) => void
+type UpdateStepStatus = (
+  stepId: StepId,
+  status: 'pending' | 'loading' | 'success' | 'error',
+) => void
+type SetCurrentStep = (stepId: StepId | null) => void
 
 export const deployJettonMinter = async (
   data: JettonFormData,
   provider: TonConnectUI,
   updateStepStatus: UpdateStepStatus,
-  setCurrentStep: SetCurrentStep
+  setCurrentStep: SetCurrentStep,
 ): Promise<string> => {
   // eslint-disable-next-line no-useless-catch
   try {
     // External step - Preparation
-    setCurrentStep('external')
-    updateStepStatus('external', 'loading')
+    setCurrentStep('prepare')
+    updateStepStatus('prepare', 'loading')
 
     const client = await getTonClient()
     const deployerAddress = Address.parse(provider.account!.address)
@@ -36,12 +40,6 @@ export const deployJettonMinter = async (
     if (await client.isContractDeployed(minter.address)) {
       throw new Error('Contract already deployed')
     }
-
-    updateStepStatus('external', 'success')
-
-    // Deploy step
-    setCurrentStep('deploy')
-    updateStepStatus('deploy', 'loading')
 
     const stateInitCell = beginCell().store(storeStateInit(minter.init!)).endCell()
     const initialMintAmount = 1337n * BigInt(10 ** data.decimals)
@@ -78,12 +76,21 @@ export const deployJettonMinter = async (
       ],
     }
 
-    await provider.sendTransaction(deployTx)
-    await waitForContractDeploy(minter.address, client)
-    
-    updateStepStatus('deploy', 'success')
+    updateStepStatus('prepare', 'success')
+    setCurrentStep('external')
+    updateStepStatus('external', 'loading')
 
-    // Mint step
+    await provider.sendTransaction(deployTx)
+
+    await waitForSeqno(deployerAddress, client)
+
+    updateStepStatus('external', 'success')
+    setCurrentStep('deploy')
+    updateStepStatus('deploy', 'loading')
+
+    await waitForContractDeploy(minter.address, client)
+
+    updateStepStatus('deploy', 'success')
     setCurrentStep('mint')
     updateStepStatus('mint', 'loading')
 
@@ -93,7 +100,7 @@ export const deployJettonMinter = async (
     )
 
     await waitForContractDeploy(deployerJettonWalletAddress, client)
-    
+
     updateStepStatus('mint', 'success')
 
     return minter.address.toString()

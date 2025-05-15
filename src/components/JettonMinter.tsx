@@ -5,24 +5,7 @@ import { JettonFormData } from '../types/minter'
 import { DeploymentProgress, DeploymentStep } from './DeploymentProgress'
 import JettonPreview from './JettonPreview'
 import { deployJettonMinter } from '../services/jetton-deployer'
-
-const DEPLOYMENT_STEPS: DeploymentStep[] = [
-  {
-    id: 'external',
-    label: 'Preparing deployment',
-    status: 'pending',
-  },
-  {
-    id: 'deploy',
-    label: 'Deploying Jetton Minter',
-    status: 'pending',
-  },
-  {
-    id: 'mint',
-    label: 'Minting initial supply',
-    status: 'pending',
-  },
-]
+import { DEPLOYMENT_STEPS, StepId } from '@/constants/steps'
 
 export const JettonMinter: FC = () => {
   const [formData, setFormData] = useState<JettonFormData>(() => {
@@ -37,8 +20,8 @@ export const JettonMinter: FC = () => {
   })
 
   const [isDeploying, setIsDeploying] = useState(false)
-  const [deploymentSteps, setDeploymentSteps] = useState<DeploymentStep[]>(DEPLOYMENT_STEPS)
-  const [currentStepId, setCurrentStepId] = useState<string | null>(null)
+  const [deploymentSteps, setDeploymentSteps] = useState<DeploymentStep[]>([...DEPLOYMENT_STEPS])
+  const [currentStepId, setCurrentStepId] = useState<StepId | null>(null)
   const [deployedAddress, setDeployedAddress] = useState<string | null>(null)
 
   const walletAddress = useTonAddress()
@@ -51,7 +34,7 @@ export const JettonMinter: FC = () => {
     }))
   }
 
-  const updateStepStatus = (stepId: string, status: DeploymentStep['status']) => {
+  const updateStepStatus = (stepId: StepId, status: DeploymentStep['status']) => {
     setDeploymentSteps((steps) =>
       steps.map((step) => (step.id === stepId ? { ...step, status } : step)),
     )
@@ -64,7 +47,7 @@ export const JettonMinter: FC = () => {
     }
 
     setIsDeploying(true)
-    setDeploymentSteps(DEPLOYMENT_STEPS) // Reset steps
+    setDeploymentSteps([...DEPLOYMENT_STEPS]) // Reset steps
     setDeployedAddress(null)
 
     try {

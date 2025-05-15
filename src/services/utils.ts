@@ -18,3 +18,21 @@ export async function waitForContractDeploy(address: Address, client: TonClient)
 
   throw new Error('Timeout')
 }
+
+const getSeqno = async (walletAddress: Address, client: TonClient) => {
+  const stack = await client.runMethod(walletAddress, `seqno`)
+  return stack.stack.readBigNumber()
+}
+
+export async function waitForSeqno(walletAddress: Address, client: TonClient) {
+  const seqnoBefore = await getSeqno(walletAddress, client)
+
+  return async () => {
+    for (let attempt = 0; attempt < 25; attempt++) {
+      await sleep(1000)
+      const seqnoAfter = await getSeqno(walletAddress, client)
+      if (seqnoAfter > seqnoBefore) return
+    }
+    throw new Error('Timeout')
+  }
+}
