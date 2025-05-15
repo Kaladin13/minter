@@ -1,3 +1,4 @@
+import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { FC, useState } from 'react'
 
 export interface FormField {
@@ -43,8 +44,63 @@ const MinterForm: FC = () => {
     }, {} as Record<string, any>),
   )
 
+  const walletAddress = useTonAddress()
+  const [tonConnectUI] = useTonConnectUI()
+
+  async function deployContract() {
+    if (!walletAddress || !tonConnectUI) {
+      throw new Error('Wallet not connected')
+    }
+
+    const data = formData
+
+    let decimals = data.decimals
+
+    const params = {
+      owner: walletAddress,
+      onchainMetaData: {
+        name: data.name,
+        symbol: data.symbol,
+        image: data.tokenImage,
+        description: data.description,
+        decimals: parseInt(decimals).toFixed(0),
+      },
+      offchainUri: data.offchainUri,
+      amountToMint: 10000,
+    }
+
+    const deployParams = createDeployParams(params, data.offchainUri)
+    const contractAddress = new ContractDeployer().addressForContract(deployParams)
+
+    try {
+      await tonConnectUI.sendTransaction({
+        validUntil: Date.now() + 5 * 60 * 1000,
+        messages: [],
+      })
+
+      const result = await jettonDeployController.createJetton(params, tonConnectUI, walletAddress)
+      analytics.sendEvent(
+        AnalyticsCategory.DEPLOYER_PAGE,
+        AnalyticsAction.DEPLOY,
+        contractAddress.toFriendly(),
+      )
+
+      navigate(`${ROUTES.jetton}/${Address.normalize(result)}`)
+    } catch (err) {
+      if (err instanceof Error) {
+        showNotification(<>{err.message}</>, 'error')
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   const handleInputChange = (name: string, value: any) => {
     setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleDeploy = () => {
+    console.log('Deploying with data:', formData)
   }
 
   return (
@@ -134,6 +190,21 @@ const MinterForm: FC = () => {
             <p style={{ marginTop: '0.5rem' }}>{field.description}</p>
           </div>
         ))}
+        <button
+          type='button'
+          onClick={handleDeploy}
+          style={{
+            marginTop: '1rem',
+            padding: '0.5rem 1rem',
+            backgroundColor: '#007BFF',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Deploy
+        </button>
       </form>
     </div>
   )
