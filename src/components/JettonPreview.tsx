@@ -7,8 +7,8 @@ interface PreviewProps {
 
 export const JettonPreview: FC<PreviewProps> = ({ formData }) => {
   return (
-    <div className="jetton-preview">
-      <div className="preview-image">
+    <div className='jetton-preview'>
+      <div className='preview-image'>
         {formData.image ? (
           <img
             src={formData.image}
@@ -21,12 +21,12 @@ export const JettonPreview: FC<PreviewProps> = ({ formData }) => {
             }}
           />
         ) : (
-          <div className="no-image">
+          <div className='no-image'>
             <span>{formData.symbol?.[0] || '?'}</span>
           </div>
         )}
       </div>
-      <div className="preview-info">
+      <div className='preview-info'>
         <h4>{formData.name || 'Token Name'}</h4>
         <p>{formData.symbol || 'SYMBOL'}</p>
         <small>Decimals: {formData.decimals || '9'}</small>
@@ -35,4 +35,4 @@ export const JettonPreview: FC<PreviewProps> = ({ formData }) => {
   )
 }
 
-export default JettonPreview 
+export default JettonPreview

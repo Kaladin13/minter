@@ -17,4 +17,4 @@ export interface JettonMetadata {
 
 export interface JettonFormData extends JettonMetadata {
   [key: string]: string | number | undefined
-} 
+}

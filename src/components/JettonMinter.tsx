@@ -40,16 +40,19 @@ export const JettonMinter: FC = () => {
   }
 
   return (
-    <div className="jetton-minter">
-      <div className="minter-container">
-        <div className="form-section">
+    <div className='jetton-minter'>
+      <div className='minter-container'>
+        <div className='form-section'>
           <h2>Deploy New Jetton</h2>
           <form onSubmit={(e) => e.preventDefault()}>
             {jettonFormSpec.map((field) => (
-              <div key={field.name} className="form-field">
+              <div
+                key={field.name}
+                className='form-field'
+              >
                 <label htmlFor={field.name}>
                   {field.label}
-                  {field.required && <span className="required">*</span>}
+                  {field.required && <span className='required'>*</span>}
                 </label>
                 {field.type === 'textarea' ? (
                   <textarea
@@ -64,30 +67,30 @@ export const JettonMinter: FC = () => {
                     type={field.type}
                     id={field.name}
                     value={formData[field.name] as string}
-                    onChange={(e) => 
+                    onChange={(e) =>
                       handleInputChange(
                         field.name,
-                        field.type === 'number' ? Number(e.target.value) : e.target.value
+                        field.type === 'number' ? Number(e.target.value) : e.target.value,
                       )
                     }
                     required={field.required}
                     placeholder={field.description}
                   />
                 )}
-                <small className="field-description">{field.description}</small>
+                <small className='field-description'>{field.description}</small>
               </div>
             ))}
             <button
-              type="button"
+              type='button'
               onClick={handleDeploy}
-              className="deploy-button"
+              className='deploy-button'
               disabled={!walletAddress}
             >
               {walletAddress ? 'Deploy Jetton' : 'Connect Wallet to Deploy'}
             </button>
           </form>
         </div>
-        <div className="preview-section">
+        <div className='preview-section'>
           <h3>Preview</h3>
           <JettonPreview formData={formData} />
         </div>
@@ -96,4 +99,4 @@ export const JettonMinter: FC = () => {
   )
 }
 
-export default JettonMinter 
+export default JettonMinter
