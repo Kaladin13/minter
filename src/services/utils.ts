@@ -8,7 +8,7 @@ async function sleep(time: number) {
 
 export async function waitForContractDeploy(address: Address, client: TonClient) {
   let isDeployed = false
-  let maxTries = 25
+  let maxTries = 15
   while (!isDeployed && maxTries > 0) {
     maxTries--
     isDeployed = await client.isContractDeployed(address)
@@ -16,7 +16,7 @@ export async function waitForContractDeploy(address: Address, client: TonClient)
     await sleep(3000)
   }
 
-  throw new Error('Timeout')
+  throw new Error('Transaction failed!')
 }
 
 const getSeqno = async (walletAddress: Address, client: TonClient) => {
@@ -28,11 +28,11 @@ export async function waitForSeqno(walletAddress: Address, client: TonClient) {
   const seqnoBefore = await getSeqno(walletAddress, client)
 
   return async () => {
-    for (let attempt = 0; attempt < 25; attempt++) {
+    for (let attempt = 0; attempt < 15; attempt++) {
       await sleep(2500)
       const seqnoAfter = await getSeqno(walletAddress, client)
       if (seqnoAfter > seqnoBefore) return
     }
-    throw new Error('Timeout')
+    throw new Error('Timeout waiting for seqno!')
   }
 }

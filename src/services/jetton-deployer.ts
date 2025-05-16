@@ -7,12 +7,18 @@ import { JettonMinter, storeMint } from './wrappers/Jetton_JettonMinter'
 import { waitForContractDeploy, waitForSeqno } from './utils'
 import { StepId } from '@/constants/steps'
 import { Network } from '../components/NetworkSwitcher'
+import { JettonMinterFeatureRich } from './wrappers/FeatureRich_JettonMinterFeatureRich'
 
 type UpdateStepStatus = (
   stepId: StepId,
   status: 'pending' | 'loading' | 'success' | 'error',
 ) => void
 type SetCurrentStep = (stepId: StepId | null) => void
+
+const wrappers = {
+  base: JettonMinter,
+  'feature-rich': JettonMinterFeatureRich,
+}
 
 export const deployJettonMinter = async (
   data: JettonFormData,
@@ -37,7 +43,10 @@ export const deployJettonMinter = async (
     }
 
     const onchainContentCell = buildOnchainMetadata(data)
-    const minter = await JettonMinter.fromInit(0n, deployerAddress, onchainContentCell, true)
+    const version = 'feature-rich' // TODO: get from form
+    const wrapper = wrappers[version]
+
+    const minter = await wrapper.fromInit(0n, deployerAddress, onchainContentCell, true)
 
     if (await client.isContractDeployed(minter.address)) {
       throw new Error('Contract already deployed')

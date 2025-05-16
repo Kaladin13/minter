@@ -48,6 +48,7 @@ export const JettonMinter: FC = () => {
   }
 
   const handleDeploy = async () => {
+    console.log('Deploying with form data:', formData);
     if (!walletAddress || !tonConnectUI) {
       console.error('Wallet not connected')
       return
