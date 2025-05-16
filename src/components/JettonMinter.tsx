@@ -7,6 +7,7 @@ import { ResultModal } from './ResultModal'
 import JettonPreview from './JettonPreview'
 import { deployJettonMinter } from '../services/jetton-deployer'
 import { DEPLOYMENT_STEPS, StepId } from '@/constants/steps'
+import { useNetwork } from '../contexts/NetworkContext'
 
 export const JettonMinter: FC = () => {
   const [formData, setFormData] = useState<JettonFormData>(() => {
@@ -31,6 +32,7 @@ export const JettonMinter: FC = () => {
 
   const walletAddress = useTonAddress()
   const [tonConnectUI] = useTonConnectUI()
+  const { network } = useNetwork()
 
   const handleInputChange = (name: string, value: string | number) => {
     setFormData((prev) => ({
@@ -61,6 +63,7 @@ export const JettonMinter: FC = () => {
         tonConnectUI,
         updateStepStatus,
         setCurrentStepId,
+        network
       )
 
       // Wait a bit before showing success to allow seeing the final step

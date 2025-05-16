@@ -2,22 +2,33 @@ import { FC } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import { TonConnectButton } from '@tonconnect/ui-react'
 import JettonMinter from './components/JettonMinter'
+import { NetworkSwitcher } from './components/NetworkSwitcher'
+import { useNetwork } from './contexts/NetworkContext'
 import './styles/App.css'
 import './styles/JettonMinter.css'
 
 export const App: FC = () => {
+  const { network, setNetwork } = useNetwork()
+
   return (
     <Router>
       <div className='app'>
         <nav className='app-nav'>
           <div className='nav-content'>
-            <Link
-              to='/'
-              className='nav-logo'
-            >
-              ⚡ Tact Minter
-            </Link>
+            <div className='nav-brand'>
+              <Link
+                to='/'
+                className='nav-logo'
+              >
+                ⚡ Tact Minter
+              </Link>
+              <div className='network-label'>{network === 'mainnet' ? 'Mainnet' : 'Testnet'}</div>
+            </div>
             <div className='nav-links'>
+              <NetworkSwitcher
+                network={network}
+                onChange={setNetwork}
+              />
               <Link
                 to='/minter'
                 className='nav-link'
@@ -47,7 +58,7 @@ export const App: FC = () => {
                     Deploy New Jetton
                   </Link>
                   <a
-                    href='https://docs.tact-lang.org/cookbook/jettons/'
+                    href='https://docs.tact-lang.org/cookbook/fungible-tokens'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='docs-link'

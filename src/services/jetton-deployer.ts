@@ -6,6 +6,7 @@ import { buildOnchainMetadata } from './jetton-helpers'
 import { JettonMinter, storeMint } from './wrappers/Jetton_JettonMinter'
 import { waitForContractDeploy, waitForSeqno } from './utils'
 import { StepId } from '@/constants/steps'
+import { Network } from '../components/NetworkSwitcher'
 
 type UpdateStepStatus = (
   stepId: StepId,
@@ -18,6 +19,7 @@ export const deployJettonMinter = async (
   provider: TonConnectUI,
   updateStepStatus: UpdateStepStatus,
   setCurrentStep: SetCurrentStep,
+  network: Network,
 ): Promise<string> => {
   // eslint-disable-next-line no-useless-catch
   try {
@@ -25,7 +27,7 @@ export const deployJettonMinter = async (
     setCurrentStep('prepare')
     updateStepStatus('prepare', 'loading')
 
-    const client = await getTonClient()
+    const client = await getTonClient(network)
     const deployerAddress = Address.parse(provider.account!.address)
     const balance = await client.getBalance(deployerAddress)
     const deployTonAmount = toNano('0.1') // 0.1 TON

@@ -29,6 +29,12 @@
   align-items: center;
 }
 
+.nav-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
 .nav-logo {
   font-family: var(--font-mono);
   font-size: 1.5rem;
@@ -40,6 +46,15 @@
 
 .nav-logo:hover {
   color: var(--color-primary);
+}
+
+.network-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .nav-links {
