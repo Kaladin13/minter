@@ -8,6 +8,7 @@ import { waitForContractDeploy, waitForSeqno } from './utils'
 import { StepId } from '@/constants/steps'
 import { Network } from '../components/NetworkSwitcher'
 import { JettonMinterFeatureRich } from './wrappers/FeatureRich_JettonMinterFeatureRich'
+import { JettonFeatures } from '../components/JettonFeatureSelector'
 
 type UpdateStepStatus = (
   stepId: StepId,
@@ -26,6 +27,7 @@ export const deployJettonMinter = async (
   updateStepStatus: UpdateStepStatus,
   setCurrentStep: SetCurrentStep,
   network: Network,
+  features: JettonFeatures,
 ): Promise<string> => {
   // eslint-disable-next-line no-useless-catch
   try {
@@ -43,7 +45,9 @@ export const deployJettonMinter = async (
     }
 
     const onchainContentCell = buildOnchainMetadata(data)
-    const version = 'base' // TODO: get from form
+
+    // Select the appropriate wrapper based on features
+    const version = Object.values(features).some((f) => f) ? 'feature-rich' : 'base'
     const wrapper = wrappers[version]
 
     const minter = await wrapper.fromInit(0n, deployerAddress, onchainContentCell, true)

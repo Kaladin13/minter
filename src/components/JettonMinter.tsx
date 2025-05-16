@@ -9,6 +9,8 @@ import { deployJettonMinter } from '../services/jetton-deployer'
 import { DEPLOYMENT_STEPS, StepId } from '@/constants/steps'
 import { useNetwork } from '../contexts/NetworkContext'
 import { generateRandomJettonData } from '../utils/random-jetton'
+import JettonFeatureSelector, { JettonFeatures, defaultFeatures } from './JettonFeatureSelector'
+import '../styles/JettonFeatureSelector.css'
 
 export const JettonMinter: FC = () => {
   const [formData, setFormData] = useState<JettonFormData>(() => {
@@ -21,6 +23,8 @@ export const JettonMinter: FC = () => {
       return acc
     }, {} as JettonFormData)
   })
+
+  const [features, setFeatures] = useState<JettonFeatures>(defaultFeatures)
 
   const [isDeploying, setIsDeploying] = useState(false)
   const [deploymentSteps, setDeploymentSteps] = useState<DeploymentStep[]>([...DEPLOYMENT_STEPS])
@@ -42,6 +46,10 @@ export const JettonMinter: FC = () => {
     }))
   }
 
+  const handleFeaturesChange = (newFeatures: JettonFeatures) => {
+    setFeatures(newFeatures)
+  }
+
   const updateStepStatus = (stepId: StepId, status: DeploymentStep['status']) => {
     setDeploymentSteps((steps) =>
       steps.map((step) => (step.id === stepId ? { ...step, status } : step)),
@@ -49,7 +57,8 @@ export const JettonMinter: FC = () => {
   }
 
   const handleDeploy = async () => {
-    console.log('Deploying with form data:', formData);
+    console.log('Deploying with form data:', formData)
+    console.log('Selected features:', features)
     if (!walletAddress || !tonConnectUI) {
       console.error('Wallet not connected')
       return
@@ -65,7 +74,8 @@ export const JettonMinter: FC = () => {
         tonConnectUI,
         updateStepStatus,
         setCurrentStepId,
-        network
+        network,
+        features // Pass features to the deploy function
       )
 
       // Wait a bit before showing success to allow seeing the final step
@@ -94,12 +104,12 @@ export const JettonMinter: FC = () => {
 
   const handleFillRandom = async () => {
     try {
-      const randomData = generateRandomJettonData();
-      setFormData(randomData);
+      const randomData = generateRandomJettonData()
+      setFormData(randomData)
     } catch (error) {
-      console.error('Error generating random data:', error);
+      console.error('Error generating random data:', error)
     }
-  };
+  }
 
   return (
     <div className='jetton-minter'>
@@ -151,6 +161,12 @@ export const JettonMinter: FC = () => {
                 <small className='field-description'>{field.description}</small>
               </div>
             ))}
+            
+            <JettonFeatureSelector 
+              features={features}
+              onChange={handleFeaturesChange}
+            />
+
             <button
               type='button'
               onClick={handleDeploy}
