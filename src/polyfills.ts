@@ -1,4 +1,15 @@
 import {Buffer} from "buffer"
-globalThis.Buffer = Buffer
-// @ts-expect-error TS2740
-globalThis.process = {env: {}}
+
+declare global {
+  interface Window {
+    Buffer: typeof Buffer;
+    process: {
+      env: Record<string, string | undefined>;
+    };
+  }
+}
+
+window.Buffer = Buffer;
+window.process = {env: {}};
+
+export {};
