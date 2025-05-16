@@ -8,6 +8,7 @@ import JettonPreview from './JettonPreview'
 import { deployJettonMinter } from '../services/jetton-deployer'
 import { DEPLOYMENT_STEPS, StepId } from '@/constants/steps'
 import { useNetwork } from '../contexts/NetworkContext'
+import { generateRandomJettonData } from '../utils/random-jetton'
 
 export const JettonMinter: FC = () => {
   const [formData, setFormData] = useState<JettonFormData>(() => {
@@ -91,11 +92,29 @@ export const JettonMinter: FC = () => {
     setDeploymentResult(null)
   }
 
+  const handleFillRandom = async () => {
+    try {
+      const randomData = generateRandomJettonData();
+      setFormData(randomData);
+    } catch (error) {
+      console.error('Error generating random data:', error);
+    }
+  };
+
   return (
     <div className='jetton-minter'>
       <div className='minter-container'>
         <div className='form-section'>
-          <h2>Deploy New Jetton</h2>
+          <div className="header-section">
+            <h2>Deploy New Jetton</h2>
+            <button
+              type='button'
+              onClick={handleFillRandom}
+              className='fill-random-button'
+            >
+              Fill with random
+            </button>
+          </div>
           <form onSubmit={(e) => e.preventDefault()}>
             {jettonFormSpec.map((field) => (
               <div

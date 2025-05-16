@@ -43,7 +43,7 @@ export const deployJettonMinter = async (
     }
 
     const onchainContentCell = buildOnchainMetadata(data)
-    const version = 'feature-rich' // TODO: get from form
+    const version = 'base' // TODO: get from form
     const wrapper = wrappers[version]
 
     const minter = await wrapper.fromInit(0n, deployerAddress, onchainContentCell, true)
