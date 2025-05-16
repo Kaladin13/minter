@@ -20,6 +20,7 @@ import {
     TupleBuilder,
     DictionaryValue
 } from '@ton/core';
+import { Buffer } from 'buffer';
 
 export type DataSize = {
     $$type: 'DataSize';
