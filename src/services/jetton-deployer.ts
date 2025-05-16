@@ -47,7 +47,7 @@ export const deployJettonMinter = async (
     const onchainContentCell = buildOnchainMetadata(data)
 
     // Select the appropriate wrapper based on features
-    const version = Object.values(features).some((f) => f) ? 'feature-rich' : 'base'
+    const version = Object.values(features).some((f) => f) ? 'base' : 'base'
     const wrapper = wrappers[version]
 
     const minter = await wrapper.fromInit(0n, deployerAddress, onchainContentCell, true)
