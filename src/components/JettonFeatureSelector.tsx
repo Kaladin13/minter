@@ -26,7 +26,8 @@ interface JettonFeatureSelectorProps {
 export const JettonFeatureSelector: FC<JettonFeatureSelectorProps> = ({ features, onChange }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const handleFeatureToggle = (feature: keyof JettonFeatures) => {
+  const handleFeatureToggle = (feature: keyof JettonFeatures, e?: React.MouseEvent) => {
+    e?.stopPropagation(); // Prevent event bubbling
     onChange({
       ...features,
       [feature]: !features[feature],
@@ -76,35 +77,64 @@ export const JettonFeatureSelector: FC<JettonFeatureSelectorProps> = ({ features
         <button 
           className={`expand-button ${isExpanded ? 'expanded' : ''}`}
           aria-label={isExpanded ? 'Collapse features' : 'Expand features'}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsExpanded(!isExpanded);
+          }}
         >
-          ▼
+          <svg 
+            width="16" 
+            height="16" 
+            viewBox="0 0 16 16" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path 
+              d="M3.5 6L8 10.5L12.5 6" 
+              stroke="currentColor" 
+              strokeWidth="1.5" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            />
+          </svg>
         </button>
       </div>
-      {isExpanded && (
-        <div className="features-grid">
-          {featuresList.map(({ id, label, description }) => (
-            <div
-              key={id}
-              className={`feature-item ${features[id as keyof JettonFeatures] ? 'selected' : ''}`}
-              onClick={() => handleFeatureToggle(id as keyof JettonFeatures)}
-            >
-              <div className="feature-header">
-                <span className="feature-label">{label}</span>
-                <div className="feature-toggle">
-                  <input
-                    type="checkbox"
-                    checked={features[id as keyof JettonFeatures]}
-                    onChange={() => handleFeatureToggle(id as keyof JettonFeatures)}
-                    id={`feature-${id}`}
-                  />
-                  <label htmlFor={`feature-${id}`} className="toggle-label" />
-                </div>
+      <div className={`features-grid ${isExpanded ? 'expanded' : ''}`}>
+        {featuresList.map(({ id, label, description }) => (
+          <div
+            key={id}
+            className={`feature-item ${features[id as keyof JettonFeatures] ? 'selected' : ''}`}
+            onClick={(e) => handleFeatureToggle(id as keyof JettonFeatures, e)}
+          >
+            <div className="feature-header">
+              <span className="feature-label">{label}</span>
+              <div 
+                className="feature-toggle"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleFeatureToggle(id as keyof JettonFeatures);
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={features[id as keyof JettonFeatures]}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    handleFeatureToggle(id as keyof JettonFeatures);
+                  }}
+                  id={`feature-${id}`}
+                />
+                <label 
+                  htmlFor={`feature-${id}`} 
+                  className="toggle-label"
+                  onClick={(e) => e.stopPropagation()}
+                />
               </div>
-              <p className="feature-description">{description}</p>
             </div>
-          ))}
-        </div>
-      )}
+            <p className="feature-description">{description}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

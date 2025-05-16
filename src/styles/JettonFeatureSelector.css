@@ -16,6 +16,8 @@
   margin: -0.5rem;
   border-radius: 8px;
   transition: background-color 0.2s;
+  user-select: none;
+  margin-bottom: 1rem;
 }
 
 .feature-header-main:hover {
@@ -32,17 +34,26 @@
 .expand-button {
   background: none;
   border: none;
-  color: var(--color-text);
-  font-size: 0.875rem;
+  color: var(--color-text-secondary);
   cursor: pointer;
   padding: 0.5rem;
-  transition: transform 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 4px;
+  transition: all 0.3s ease;
 }
 
-.expand-button.expanded {
+.expand-button:hover {
+  color: var(--color-text);
+  background-color: var(--color-background);
+}
+
+.expand-button svg {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.expand-button.expanded svg {
   transform: rotate(180deg);
 }
 
@@ -50,7 +61,17 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1rem;
-  margin-top: 1.5rem;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-top: 0.5rem;
+}
+
+.features-grid.expanded {
+  opacity: 1;
+  max-height: 1000px;
+  margin-top: 0.5rem;
 }
 
 .feature-item {
@@ -113,7 +134,7 @@
   bottom: 0;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
-  transition: .4s;
+  transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 24px;
 }
 
@@ -125,7 +146,7 @@
   left: 3px;
   bottom: 3px;
   background-color: var(--color-text-secondary);
-  transition: .4s;
+  transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 50%;
 }
 
