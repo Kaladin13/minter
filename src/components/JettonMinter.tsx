@@ -9,9 +9,10 @@ import { deployJettonMinter } from '../services/jetton-deployer'
 import { DEPLOYMENT_STEPS, StepId } from '@/constants/steps'
 import { useNetwork } from '../contexts/NetworkContext'
 import { generateRandomJettonData } from '../utils/random-jetton'
-import JettonFeatureSelector, { JettonFeatures, defaultFeatures } from './JettonFeatureSelector'
+import JettonFeatureSelector from './JettonFeatureSelector'
 import { NetworkSwitcher } from './NetworkSwitcher'
 import '../styles/JettonFeatureSelector.css'
+import { defaultFeatures, JettonFeatures } from '@/constants/features'
 
 export const JettonMinter: FC = () => {
   const [formData, setFormData] = useState<JettonFormData>(() => {
@@ -76,7 +77,7 @@ export const JettonMinter: FC = () => {
         updateStepStatus,
         setCurrentStepId,
         network,
-        features // Pass features to the deploy function
+        features, // Pass features to the deploy function
       )
 
       // Wait a bit before showing success to allow seeing the final step
@@ -116,7 +117,7 @@ export const JettonMinter: FC = () => {
     <div className='jetton-minter'>
       <div className='minter-container'>
         <div className={`form-section ${network === 'testnet' ? 'testnet-mode' : ''}`}>
-          <div className="header-section">
+          <div className='header-section'>
             <h2>Deploy New Jetton</h2>
             <button
               type='button'
@@ -171,8 +172,8 @@ export const JettonMinter: FC = () => {
                 <small className='field-description'>{field.description}</small>
               </div>
             ))}
-            
-            <JettonFeatureSelector 
+
+            <JettonFeatureSelector
               features={features}
               onChange={handleFeaturesChange}
             />

@@ -8,7 +8,7 @@ import { waitForContractDeploy, waitForSeqno } from './utils'
 import { StepId } from '@/constants/steps'
 import { Network } from '../components/NetworkSwitcher'
 import { JettonMinterFeatureRich } from './wrappers/FeatureRich_JettonMinterFeatureRich'
-import { JettonFeatures } from '../components/JettonFeatureSelector'
+import { JettonFeatures } from '@/constants/features'
 
 type UpdateStepStatus = (
   stepId: StepId,
