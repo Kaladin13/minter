@@ -10,6 +10,5 @@ declare global {
 }
 
 window.Buffer = Buffer;
-window.process = {env: {}};
 
 export {};
