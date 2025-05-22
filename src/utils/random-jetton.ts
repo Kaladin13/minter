@@ -4,7 +4,6 @@ import { JettonFormData } from '../types/minter'
 const DICEBEAR_STYLES = [
   'bottts',
   'fun-emoji',
-  'identicon'
 ]
 
 const generateRandomAvatarUrl = () => {
