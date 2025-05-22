@@ -15,16 +15,40 @@ export const JettonFeatureSelector: FC<JettonFeatureSelectorProps> = ({ features
     });
   };
 
+  const handleTooltipClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <div className="features-grid">
-      {featuresList.map(({ id, label, description }) => (
+      {featuresList.map(({ id, label, description, infoText }) => (
         <div
           key={id}
           className={`feature-item ${features[id] ? 'selected' : ''}`}
           onClick={(e) => handleFeatureToggle(id, e)}
         >
           <div className="feature-header">
-            <span className="feature-label">{label}</span>
+            <span className="feature-label">
+              {label}
+              {infoText && (
+                <span className="info-icon">
+                  ℹ
+                  <span 
+                    className="info-tooltip"
+                    onClick={handleTooltipClick}
+                  >
+                    {infoText.text}{' '}
+                    <a 
+                      href={infoText.linkUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      {infoText.linkText}
+                    </a>
+                  </span>
+                </span>
+              )}
+            </span>
             <div 
               className="feature-toggle"
               onClick={(e) => {
