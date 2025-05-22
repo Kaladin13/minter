@@ -6,12 +6,14 @@ interface PreviewProps {
 }
 
 export const JettonPreview: FC<PreviewProps> = ({ formData }) => {
+  const imageUrl = formData.image ? `${formData.image}&t=${Date.now()}` : null
+
   return (
     <div className='jetton-preview'>
       <div className='preview-image'>
-        {formData.image ? (
+        {imageUrl ? (
           <img
-            src={formData.image}
+            src={imageUrl}
             alt={`${formData.name} logo`}
             style={{
               width: '100%',
