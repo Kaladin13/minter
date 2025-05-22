@@ -10,6 +10,7 @@ import { DEPLOYMENT_STEPS, StepId } from '@/constants/steps'
 import { useNetwork } from '../contexts/NetworkContext'
 import { generateRandomJettonData } from '../utils/random-jetton'
 import JettonFeatureSelector, { JettonFeatures, defaultFeatures } from './JettonFeatureSelector'
+import { NetworkSwitcher } from './NetworkSwitcher'
 import '../styles/JettonFeatureSelector.css'
 
 export const JettonMinter: FC = () => {
@@ -37,7 +38,7 @@ export const JettonMinter: FC = () => {
 
   const walletAddress = useTonAddress()
   const [tonConnectUI] = useTonConnectUI()
-  const { network } = useNetwork()
+  const { network, setNetwork } = useNetwork()
 
   const handleInputChange = (name: string, value: string | number) => {
     setFormData((prev) => ({
@@ -114,7 +115,7 @@ export const JettonMinter: FC = () => {
   return (
     <div className='jetton-minter'>
       <div className='minter-container'>
-        <div className='form-section'>
+        <div className={`form-section ${network === 'testnet' ? 'testnet-mode' : ''}`}>
           <div className="header-section">
             <h2>Deploy New Jetton</h2>
             <button
@@ -126,6 +127,15 @@ export const JettonMinter: FC = () => {
             </button>
           </div>
           <form onSubmit={(e) => e.preventDefault()}>
+            <div className='form-field'>
+              <label>Network</label>
+              <NetworkSwitcher
+                network={network}
+                onChange={setNetwork}
+              />
+              <small className='field-description'>Select network for deployment</small>
+            </div>
+
             {jettonFormSpec.map((field) => (
               <div
                 key={field.name}
