@@ -12,12 +12,9 @@ export const App: FC = () => {
         <nav className='app-nav'>
           <div className='nav-content'>
             <div className='nav-brand'>
-              <Link
-                to='/'
-                className='nav-logo'
-              >
+              <div className='nav-logo'>
                 ⚡ Tact Minter
-              </Link>
+              </div>
             </div>
             <div className='nav-links'>
               <TonConnectButton />
