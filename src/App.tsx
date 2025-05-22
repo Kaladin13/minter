@@ -20,12 +20,6 @@ export const App: FC = () => {
               </Link>
             </div>
             <div className='nav-links'>
-              <Link
-                to='/minter'
-                className='nav-link'
-              >
-                Create Jetton
-              </Link>
               <TonConnectButton />
             </div>
           </div>
