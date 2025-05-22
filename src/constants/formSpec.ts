@@ -6,7 +6,7 @@ export const jettonFormSpec: FormField[] = [
     label: 'Name',
     type: 'text',
     required: true,
-    description: 'Token name',
+    description: 'Full token name, can contain spaces',
     default: 'Tact Jetton',
   },
   {
@@ -14,7 +14,7 @@ export const jettonFormSpec: FormField[] = [
     label: 'Symbol',
     type: 'text',
     required: true,
-    description: 'Token symbol',
+    description: 'Currency symbol appearing in balance in user wallets',
     default: 'SYMBOL',
   },
   {
@@ -22,7 +22,7 @@ export const jettonFormSpec: FormField[] = [
     label: 'Decimals',
     type: 'number',
     required: true,
-    description: 'Token decimals',
+    description: 'The decimal precision of your token (9 is TON default)',
     default: '9',
   },
   {
@@ -30,7 +30,7 @@ export const jettonFormSpec: FormField[] = [
     label: 'Description',
     type: 'textarea',
     required: false,
-    description: 'Token description',
+    description: 'Optional sentence explaining about your project',
   },
   {
     name: 'image',
