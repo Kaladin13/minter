@@ -12,6 +12,7 @@
   min-height: 100vh;
   background-color: var(--color-background);
   color: var(--color-text);
+  font-family: var(--font-sans);
 }
 
 .app-nav {
@@ -64,7 +65,7 @@
 }
 
 .nav-link {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   color: var(--color-text);
   text-decoration: none;
   font-weight: 500;
@@ -92,6 +93,7 @@
 }
 
 .home p {
+  font-family: var(--font-sans);
   font-size: 1.25rem;
   color: var(--color-text-secondary);
   margin-bottom: 3rem;
@@ -106,7 +108,7 @@
 }
 
 .cta-button {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   display: inline-block;
   padding: 1rem 2rem;
   background-color: var(--color-primary);
@@ -123,7 +125,7 @@
 }
 
 .docs-link {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   display: inline-block;
   padding: 1rem 2rem;
   background-color: var(--color-surface);

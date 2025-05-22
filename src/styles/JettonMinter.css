@@ -2,6 +2,7 @@
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  font-family: var(--font-sans);
 }
 
 .minter-container {
@@ -32,7 +33,7 @@
 }
 
 .form-field label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
@@ -47,7 +48,7 @@
   border: 1px solid var(--color-border);
   border-radius: 6px;
   font-size: 0.9rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   color: var(--color-text);
   transition: border-color 0.2s;
   box-sizing: border-box;
@@ -69,7 +70,7 @@
   margin-top: 0.25rem;
   color: var(--color-text-secondary);
   font-size: 0.875rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 
 .required {
@@ -88,7 +89,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 
 .deploy-button:hover {
@@ -163,13 +164,13 @@
 .preview-info p {
   margin: 0.5rem 0;
   color: var(--color-text-secondary);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 
 .preview-info small {
   color: var(--color-text-secondary);
   font-size: 0.875rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 
 .header-section {
@@ -202,7 +203,7 @@
 
 .network-button {
   flex: 1;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.8rem;
   font-weight: 500;
   padding: 0.5rem;
@@ -235,7 +236,7 @@
   border: 1px solid #3d3d3d;
   border-radius: 8px;
   padding: 8px 16px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-sans);
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
