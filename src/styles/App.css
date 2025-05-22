@@ -8,6 +8,10 @@
   --color-border: #30363d;
 }
 
+body {
+  margin: 0;
+}
+
 .app {
   min-height: 100vh;
   background-color: var(--color-background);
