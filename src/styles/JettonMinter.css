@@ -67,14 +67,14 @@
 
 .field-description {
   display: block;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
   color: var(--color-text-secondary);
   font-size: 0.875rem;
   font-family: var(--font-sans);
 }
 
 .required {
-  color: var(--color-text-secondary);
+  color: #ff4d4f;
   margin-left: 0.25rem;
 }
 
