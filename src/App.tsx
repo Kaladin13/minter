@@ -7,7 +7,7 @@ import './styles/JettonMinter.css'
 
 export const App: FC = () => {
   return (
-    <Router>
+    <Router basename="/minter">
       <div className='app'>
         <nav className='app-nav'>
           <div className='nav-content'>
