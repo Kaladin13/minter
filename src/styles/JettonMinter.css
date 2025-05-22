@@ -231,20 +231,20 @@
 }
 
 .fill-random-button {
-  background-color: #2d2d2d;
-  color: #fff;
-  border: 1px solid #3d3d3d;
-  border-radius: 8px;
-  padding: 8px 16px;
+  background-color: var(--color-primary);
+  color: white;
+  border: 1px solid var(--color-primary);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .fill-random-button:hover {
-  background-color: #3d3d3d;
-  border-color: #4d4d4d;
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
 }
 
 .fill-random-button:active {
