@@ -41,7 +41,7 @@ body {
 }
 
 .nav-logo {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--color-text);
@@ -54,7 +54,7 @@ body {
 }
 
 .network-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: 500;
   color: var(--color-text-secondary);
@@ -89,7 +89,7 @@ body {
 }
 
 .home h1 {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 3rem;
   margin-bottom: 1.5rem;
   color: var(--color-text);

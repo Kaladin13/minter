@@ -20,7 +20,7 @@
 }
 
 .form-section h2 {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   color: var(--color-text);
   margin: 0 0 2rem 0;
   font-weight: 700;
@@ -114,7 +114,7 @@
 }
 
 .preview-section h3 {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   color: var(--color-text);
   margin: 0 0 2rem 0;
   font-weight: 700;
@@ -150,14 +150,14 @@
   font-size: 3rem;
   font-weight: bold;
   color: var(--color-text-secondary);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 
 .preview-info h4 {
   margin: 0;
   font-size: 1.25rem;
   color: var(--color-text);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-weight: 700;
 }
 

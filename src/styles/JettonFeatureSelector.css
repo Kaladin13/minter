@@ -8,14 +8,14 @@
 }
 
 .jetton-feature-selector h3 {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   color: var(--color-text);
   margin: 0 0 1.5rem 0;
   font-weight: 700;
 }
 
 .features-heading {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   color: var(--color-text);
   margin: 0 0 1.5rem 0;
   font-weight: 700;
